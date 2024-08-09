@@ -5,7 +5,7 @@ authors = [{ name = "Caleb Grant", email = "grantcaleb22@gmail.com" }]
 description = "Create a summary of unique values for each column in a Postgres table or view and summarize results in an Excel workbook."
 readme = { file = "README.md", content-type = "text/markdown" }
 license = { file = "LICENSE" }
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
