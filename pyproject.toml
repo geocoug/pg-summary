@@ -16,7 +16,7 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
   "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
 ]
-dependencies = ["oopenpyxl==3.1.5", "psycopg2-binary==2.9.9"]
+dependencies = ["openpyxl==3.1.5", "psycopg2-binary==2.9.9"]
 keywords = ["PostgreSQL", "DBMS", "Database"]
 
 [project.scripts]
