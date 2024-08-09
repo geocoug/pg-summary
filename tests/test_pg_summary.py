@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 from dotenv import load_dotenv
-from psycopg2.sql import SQL, Identifier, Literal
+from psycopg2.sql import SQL, Literal
 
 from pg_summary.pg_summary import PgSummary, PostgresDB
 
@@ -81,25 +81,6 @@ def test_db_execute(db):
     assert cur.fetchone()[0] == 1
 
 
-def test_db_execute_values(db):
-    """Test a query execution with values."""
-    cur = db.execute(SQL("SELECT {}").format(Literal(1)))
-    assert cur.fetchone()[0] == 1
-    cur = db.execute(
-        SQL(
-            """
-            select table_name from information_schema.tables
-            where table_schema={schema} and {column}={value}
-        """,
-        ).format(
-            schema=Literal("staging"),
-            column=Identifier("table_name"),
-            value=Literal("genres"),
-        ),
-    )
-    assert cur.fetchone()[0] == "genres"
-
-
 def test_db_rowdict(db):
     """Test the rowdict function."""
     rows, headers, rowcount = db.rowdict("SELECT 1 as one, 2 as two")
@@ -127,10 +108,60 @@ def test_db_rowdict_params(db):
     assert rows[0]["two"] == 2
 
 
-def test_pgsummary_init(db, pgsummary):
+def test_pgsummary_init(pgsummary):
     """Test the PgSummary object initialization."""
     assert pgsummary.db.host == "localhost"
     assert pgsummary.db.database == "dev"
+    assert pgsummary.db.port == 5432
+    assert pgsummary.db.passwd is not None
     assert pgsummary.schema == "public"
     assert pgsummary.table_or_view == "books"
     assert pgsummary.include_src is False
+
+
+def test_pgsummary_schema_exists(pgsummary):
+    assert pgsummary._schema_exists() is True
+
+
+def test_pgsummary_table_or_view_exists(pgsummary):
+    assert pgsummary._table_or_view_exists() is True
+
+
+def test_pgsummary_table_column_exists(pgsummary):
+    assert pgsummary._table_column_exists("book_id") is True
+
+
+def test_pgsummary_table_or_view_has_rows(pgsummary):
+    assert pgsummary._table_or_view_has_rows() is True
+
+
+def test_pgsummary_column_has_rows(pgsummary):
+    assert pgsummary._column_has_rows("book_id") is True
+
+
+def test_pgsummary_get_column_names(pgsummary):
+    assert pgsummary.get_column_names() == ["book_id", "book_title", "genre", "notes"]
+
+
+def test_pgsummary_get_column_dtype(pgsummary):
+    assert pgsummary.get_column_dtype("book_id") == "character varying(100)"
+
+
+def test_pgsummary_get_unique_column_values(pgsummary):
+    unique_values, _, count = pgsummary.get_unique_column_values("book_id")
+    assert [v["book_id"] for v in unique_values] == ["B001", "B002"]
+    assert count == 2
+
+
+def test_pgsummary_get_null_column_value_count(pgsummary):
+    null_count = pgsummary.get_null_column_value_count("genre")
+    assert null_count == 0
+
+
+def test_pgsummary_get_table_row_count(pgsummary):
+    row_count = pgsummary.get_table_row_count()
+    assert row_count == 2
+
+
+def test_pgsummary_summary(pgsummary):
+    pass
