@@ -21,7 +21,7 @@ COPY ./requirements.txt /tmp/requirements.txt
 RUN $HOME/.cargo/bin/uv pip install --system --no-cache -r /tmp/requirements.txt \
     && rm -rf /tmp/requirements.txt
 
-COPY ./boilerplate $HOME/boilerplate
+COPY ./pg_summary $HOME/pg_summary
 
 COPY ./pyproject.toml $HOME
 

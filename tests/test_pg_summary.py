@@ -43,13 +43,9 @@ def db(global_variables):
     db.execute(
         """
         delete from public.book_authors;
-        delete from staging.book_authors;
         delete from public.authors;
-        delete from staging.authors;
         delete from public.books;
-        delete from staging.books;
         delete from public.genres;
-        delete from staging.genres;
     """,
     )
     db.close()
