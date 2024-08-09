@@ -1,0 +1,10 @@
+.venv/
+*log*
+*cache*
+.coverage
+.env
+dist/
+*.egg-info
+build/
+docs/_build/
+site/
