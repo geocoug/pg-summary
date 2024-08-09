@@ -21,7 +21,7 @@ __author__ = "Caleb Grant"
 __url__ = "https://github.com/geocoug/pg-summary"
 __author_email__ = "grantcaleb22@gmail.com"
 __license__ = "GNU GPLv3"
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __description__ = "Create a summary of unique values for each column in a Postgres table or view and summarize results in an Excel workbook."  # noqa: E501
 
 logging.basicConfig(
